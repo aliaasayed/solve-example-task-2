@@ -17,12 +17,20 @@ app.get('/', (req, res) => {
   });
 
   res.send({ length: exampleData.length, data: groupedData });
-  // res.send(exampleData);
 })
 
 app.get('/location/:when', (req, res) => {
   // TODO(Task 2): Return the tracking data closest to `req.params.when` from `exampleData`.
-  res.send({})
+
+  var rangeData = _.filter(exampleData, function (data) {
+    t1 = new Date(data.time)
+    t2 = new Date(req.params.when)
+
+    if (Math.abs(t2 - t1) / (1000) <= 500)
+      return data;
+  });
+
+  res.send(rangeData);
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
